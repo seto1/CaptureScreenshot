@@ -20,6 +20,9 @@ let nowText =  now.getFullYear()
     let screenshotPath = 'screenshot/' + nowText + '/' + encodeURIComponent(url) + '.png';
     console.log(url);
     await page.goto(url);
+    await page.screenshot({ fullPage: true });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(500);
     await page.screenshot({ path: screenshotPath, fullPage: true });
   }
   await context.close();
