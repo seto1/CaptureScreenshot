@@ -16,9 +16,18 @@ let nowText =  now.getFullYear()
   context = await browser.newContext();
   const page = await context.newPage();
   for (let url of urls) {
+    url = url.trim();
     if (!url) continue;
-    let screenshotPath = 'screenshot/' + nowText + '/' + encodeURIComponent(url) + '.png';
+    // コメント
+    if (url.match(/^(#|\/\/)/)) {
+        continue;
+    }
+    if (! url.match(/^https?:\/\//)) {
+        console.log('[URL以外の文字列] ' + url);
+        continue;
+    }
     console.log(url);
+    let screenshotPath = 'screenshot/' + nowText + '/' + encodeURIComponent(url) + '.png';
     await page.goto(url);
     await page.screenshot({ fullPage: true });
     await page.waitForLoadState('networkidle');
